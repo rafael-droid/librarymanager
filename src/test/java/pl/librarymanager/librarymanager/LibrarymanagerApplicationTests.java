@@ -1,4 +1,4 @@
-package pl.librarymanager;
+package pl.librarymanager.librarymanager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

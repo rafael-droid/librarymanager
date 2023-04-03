@@ -1,4 +1,4 @@
-package pl.librarymanager;
+package pl.librarymanager.librarymanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
