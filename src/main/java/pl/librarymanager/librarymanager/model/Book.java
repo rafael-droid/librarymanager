@@ -7,7 +7,6 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Book")
 @Entity
 @RequiredArgsConstructor
 @ToString
@@ -21,7 +20,5 @@ public class Book {
     private String title;
     @Column(nullable = false)
     private String category;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id",nullable = false)
-    private Author author;
+
 }
