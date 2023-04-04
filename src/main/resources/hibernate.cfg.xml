@@ -1,13 +1,19 @@
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/database1</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">kamil</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <mapping class="pl.librarymanager.librarymanager.model.Author" />
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+        <property name="comment_cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+        <property name="hibernate.generate_statistics">true</property>
+
+        <!-- <property name="hbm2ddl.auto">create</property> -->
+
         <mapping class="pl.librarymanager.librarymanager.model.Book" />
+        <mapping class="pl.librarymanager.librarymanager.model.Author" />
 
     </session-factory>
     </hibernate-configuration>

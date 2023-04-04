@@ -7,9 +7,10 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "Book")
 @RequiredArgsConstructor
 @ToString
+@Table(name = "Book")
 public class Book {
     @NonNull
     @Id
@@ -20,5 +21,8 @@ public class Book {
     private String title;
     @Column(nullable = false)
     private String category;
+    @ManyToOne
+    @JoinColumn
+    private Author author;
 
 }

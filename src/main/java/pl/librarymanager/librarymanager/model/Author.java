@@ -3,13 +3,16 @@ package pl.librarymanager.librarymanager.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "Author")
 @ToString
+@Table(name = "Author")
 public class Author {
     @NonNull
     @Id
@@ -22,5 +25,7 @@ public class Author {
     @NonNull
     @Column(nullable = false)
     private String lastName;
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Book> books;
 
 }
