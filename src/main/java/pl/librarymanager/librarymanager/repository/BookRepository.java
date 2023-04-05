@@ -6,6 +6,6 @@ import pl.librarymanager.librarymanager.model.Book;
 import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
-    Optional<Book> getBookById(Long id);
+    Book getBookById(Long id);
     void deleteBookById(Long id);
 }
