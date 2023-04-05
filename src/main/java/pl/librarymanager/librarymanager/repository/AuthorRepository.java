@@ -12,5 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
-    Optional<Author> getAuthorById(Long id);
+    Author getAuthorById(Long id);
+    void deleteAuthorById(Long id);
 }

@@ -2,11 +2,9 @@ package pl.librarymanager.librarymanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.librarymanager.librarymanager.model.Author;
 import pl.librarymanager.librarymanager.model.Book;
 import pl.librarymanager.librarymanager.repository.AuthorRepository;
@@ -29,7 +27,40 @@ public class AuthorService {
     }
     @GetMapping("/{id}")
     public ResponseEntity getAuthorById(@PathVariable("id") Long id){
-        Optional<Author> author = authorRepository.getAuthorById(id);
+        Author author = authorRepository.getAuthorById(id);
         return ResponseEntity.ok(author);
+    }
+    @PostMapping("/add")
+    public ResponseEntity<Author> addAuthor(@RequestBody Author author){
+        Author newAuthor = authorRepository.save(author);
+        return new ResponseEntity<>(newAuthor, HttpStatus.CREATED);
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Author> updateAuthor(@RequestBody Author author, @PathVariable("id") String id){
+        Author updateAuthor = authorRepository.save(author);
+        return new ResponseEntity<>(updateAuthor, HttpStatus.OK);
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deteleEmployee(@PathVariable("id") Long id){
+        authorRepository.deleteAuthorById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<Author> partialUpdateAuthor(@RequestBody Author author, @PathVariable("id") Long id){
+        Author oldAuthor = authorRepository.getAuthorById(id);
+        if(oldAuthor != null) {
+            if (oldAuthor.getFirstName() != author.getFirstName()) {
+                oldAuthor.setFirstName(author.getFirstName());
+            }
+            else if (oldAuthor.getLastName() != author.getLastName()) {
+                oldAuthor.setLastName(author.getLastName());
+            }
+             else if (oldAuthor.getBooks() != author.getBooks()) {
+                oldAuthor.setBooks(author.getBooks());
+            }
+             authorRepository.save(oldAuthor);
+        }
+
+        return new ResponseEntity<>(oldAuthor, HttpStatus.OK);
     }
 }
