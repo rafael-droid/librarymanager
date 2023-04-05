@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.librarymanager.librarymanager.Exception.BookNotFoundException;
 import pl.librarymanager.librarymanager.model.Author;
 import pl.librarymanager.librarymanager.model.Book;
 import pl.librarymanager.librarymanager.repository.BookRepository;
@@ -33,13 +34,26 @@ public class BookService {
     }
     @PostMapping("/add")
     public ResponseEntity<Book> addBook(@RequestBody Book book){
-        Book newBook = bookRepository.save(book);
-        return new ResponseEntity<>(newBook, HttpStatus.CREATED);
+        Book bookFromDB = bookRepository.getBookById(book.getId());
+
+        if(bookFromDB == null){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+        }
+        else{
+            Book newBook = bookRepository.save(book);
+            return new ResponseEntity<>(newBook, HttpStatus.CREATED);
+        }
+
+
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Book> updateBook(@RequestBody Book book, @PathVariable("id") String id){
-        Book updateBook = bookRepository.save(book);
-        return new ResponseEntity<>(updateBook, HttpStatus.OK);
+    public ResponseEntity<Book> updateBook(@RequestBody Book book, @PathVariable("id") Long id) throws Exception {
+        if(bookRepository.getBookById(id) != null) {
+            Book updateBook = bookRepository.save(book);
+            return new ResponseEntity<>(updateBook, HttpStatus.OK);
+        }
+        else throw new BookNotFoundException("Book with this id is not exist in database");
+
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deteleBook(@PathVariable("id") Long id){

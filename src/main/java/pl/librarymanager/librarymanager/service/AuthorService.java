@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.librarymanager.librarymanager.Exception.AuthorNotFoundException;
 import pl.librarymanager.librarymanager.model.Author;
 import pl.librarymanager.librarymanager.model.Book;
 import pl.librarymanager.librarymanager.repository.AuthorRepository;
@@ -32,13 +33,27 @@ public class AuthorService {
     }
     @PostMapping("/add")
     public ResponseEntity<Author> addAuthor(@RequestBody Author author){
-        Author newAuthor = authorRepository.save(author);
-        return new ResponseEntity<>(newAuthor, HttpStatus.CREATED);
+        Author authorFromDB = authorRepository.getAuthorById(author.getId());
+
+        if(authorFromDB == null){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+
+        }else {
+            Author newAuthor = authorRepository.save(author);
+            return new ResponseEntity<>(newAuthor, HttpStatus.CREATED);
+        }
+
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<Author> updateAuthor(@RequestBody Author author, @PathVariable("id") String id){
-        Author updateAuthor = authorRepository.save(author);
-        return new ResponseEntity<>(updateAuthor, HttpStatus.OK);
+        Author authorFromDB = authorRepository.getAuthorById(author.getId());
+
+        if(authorFromDB == null) {
+            throw new AuthorNotFoundException("Author with this id is not exist in database");
+        }else {
+            Author updateAuthor = authorRepository.save(author);
+            return new ResponseEntity<>(updateAuthor, HttpStatus.OK);
+        }
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deteleEmployee(@PathVariable("id") Long id){
