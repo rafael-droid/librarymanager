@@ -39,6 +39,7 @@ public class Database {
             author1.setLastName("Kowalski");
             author2.setFirstName("Szymon");
             author2.setLastName("Nowak");
+            book1.setAuthor(author1);
             book1.setTitle("ksiazka1");
             book1.setCategory("comedy");
 

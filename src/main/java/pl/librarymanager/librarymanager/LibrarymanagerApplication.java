@@ -11,7 +11,7 @@ public class LibrarymanagerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LibrarymanagerApplication.class, args);
 		Database database = new Database();
-		database.start();
+		//database.start();
 		//database.fill();
 
 	}

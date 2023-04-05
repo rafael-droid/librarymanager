@@ -1,8 +1,10 @@
 package pl.librarymanager.librarymanager.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -12,8 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name = "Author")
 @ToString
-@Table(name = "Author")
-public class Author {
+public class Author implements Serializable {
     @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +26,8 @@ public class Author {
     @NonNull
     @Column(nullable = false)
     private String lastName;
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Book> books;
 
 }

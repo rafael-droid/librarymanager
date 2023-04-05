@@ -1,7 +1,10 @@
 package pl.librarymanager.librarymanager.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -10,8 +13,7 @@ import lombok.*;
 @Entity(name = "Book")
 @RequiredArgsConstructor
 @ToString
-@Table(name = "Book")
-public class Book {
+public class Book implements Serializable {
     @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +23,9 @@ public class Book {
     private String title;
     @Column(nullable = false)
     private String category;
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id")
+    @JsonBackReference
     private Author author;
 
 }
